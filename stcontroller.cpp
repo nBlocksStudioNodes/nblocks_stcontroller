@@ -6,7 +6,9 @@ enum OutputList {
 	OUTPUT_LEDS,
 	OUTPUT_IRCUT,
 	OUTPUT_IRLED,
-	OUTPUT_LENS
+	OUTPUT_LENS,
+	OUTPUT_TEMP,
+	OUTPUT_METER
 };
 
 
@@ -18,9 +20,7 @@ nBlock_StController::nBlock_StController(PinName pinTX, PinName pinRX): _ser(pin
 	_ser.baud ( 115200 );
 	// configures the terminal interpreter
 	terminal_pi = new uTerminal(&_ser);
-	terminal_pi->ModeManual();
-	terminal_pi->print("--- INIT ---\n");
-    return;
+	terminal_pi->ModeManual();    return;
 }
 void nBlock_StController::triggerInput(uint32_t inputNumber, uint32_t value) { // inputNumber is ignored
     char * string_buf = (char *)(value);
@@ -243,7 +243,20 @@ void nBlock_StController::processCmd(void) {
         
     }     	
 	
+	//  "TEMP"
+    else if (strcmp(terminal_pi->Command,"TEMP") == 0) {
+        terminal_pi->print("OK\n");
+		output   [OUTPUT_TEMP] = 1; // TEMP output is a trigger
+		available[OUTPUT_TEMP] = 1; 
+	}
 	
+	//  "METER"
+    else if (strcmp(terminal_pi->Command,"METER") == 0) {
+        terminal_pi->print("OK\n");
+		output   [OUTPUT_METER] = 1; // METER output is a trigger
+		available[OUTPUT_METER] = 1; 
+	}
+
 	// UNKNOWN COMMAND
     else {
         // Unknown command

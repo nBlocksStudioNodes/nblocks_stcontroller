@@ -6,7 +6,7 @@
 
 #define NUM_PIXELS     12   
 
-class nBlock_StController: public nBlockSimpleNode<4> {
+class nBlock_StController: public nBlockSimpleNode<6> {
 public:
     nBlock_StController(PinName pinTX, PinName pinRX);
     void triggerInput(uint32_t inputNumber, uint32_t value);
