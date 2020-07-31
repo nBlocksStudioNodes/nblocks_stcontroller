@@ -8,7 +8,9 @@ enum OutputList {
 	OUTPUT_IRLED,
 	OUTPUT_LENS,
 	OUTPUT_TEMP,
-	OUTPUT_METER
+	OUTPUT_METER,
+	OUTPUT_BEEP,
+	OUTPUT_LOAD
 };
 
 
@@ -257,6 +259,59 @@ void nBlock_StController::processCmd(void) {
 		available[OUTPUT_METER] = 1; 
 	}
 
+	//  "BEEP"
+    else if (strcmp(terminal_pi->Command,"BEEP") == 0) {
+        terminal_pi->print("OK\n");
+		output   [OUTPUT_BEEP] = 1; // BEEP output is a trigger
+		available[OUTPUT_BEEP] = 1; 
+	}
+
+	//  "LOAD"
+    else if (strcmp(terminal_pi->Command,"LOAD") == 0) {
+        if (terminal_pi->NumParams == 1) {
+            // Valid command has 1 parameter
+            terminal_pi->GetParam();                                             // loads first/next parameter into terminal_pi.Param
+            err = 0;
+
+			// The correct parameter value must be i char ('0' or '1')
+            if (terminal_pi->ParamLen == 1) {
+                switch (terminal_pi->Param[0]) {
+                    case '1':
+						output   [OUTPUT_LOAD] = 1;
+						available[OUTPUT_LOAD] = 1;
+						terminal_pi->print("LOAD: 1\n");
+                        break;
+                    case '0':
+						output   [OUTPUT_LOAD] = 0;
+						available[OUTPUT_LOAD] = 1;
+						terminal_pi->print("LOAD: 0\n");
+                        break;
+                    default:
+                        err++;
+                        break;
+                }
+                if (!err) {
+                    terminal_pi->print("OK\n");                                  // If no errors print OK
+                }
+                else {
+                    // This parameter has invalid value
+                    sprintf(response, "ERR=%d\n", ERR_INVALID_VALUE);
+                    terminal_pi->print(response);
+                }
+            }
+            else {
+                // This parameter has invalid length
+                sprintf(response, "ERR=%d\n", ERR_PARAM_LEN);
+                terminal_pi->print(response);
+            }
+        }
+        else {
+            // Error on data length, not 1 values
+            sprintf(response, "ERR=%d\n", ERR_DATA_LEN);
+            terminal_pi->print(response);
+        }
+	}
+	
 	// UNKNOWN COMMAND
     else {
         // Unknown command
