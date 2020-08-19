@@ -24,10 +24,8 @@ nBlock_StController::nBlock_StController(PinName pinTX, PinName pinRX): _ser(pin
 	terminal_pi = new uTerminal(&_ser);
 	terminal_pi->ModeManual();    return;
 }
-void nBlock_StController::triggerInput(uint32_t inputNumber, uint32_t value) { // inputNumber is ignored
-    char * string_buf = (char *)(value);
-	
-	terminal_pi->print(string_buf);
+void nBlock_StController::triggerInput(nBlocks_Message message) {
+	terminal_pi->print(message.stringValue);
 }
 void nBlock_StController::endFrame(void) {
 	//output[0] = <data>
