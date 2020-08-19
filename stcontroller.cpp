@@ -18,6 +18,9 @@ nBlock_StController::nBlock_StController(PinName pinTX, PinName pinRX): _ser(pin
 	// Reset values for LEDs
 	for (int i=0; i<(NUM_PIXELS*3); i++) NeoPixelValues[i] = 0;
 	
+	// Configures output types which are not INT
+	outputType[OUTPUT_LEDS] = OUTPUT_TYPE_ARRAY;
+	
 	// Configures the serial port
 	_ser.baud ( 115200 );
 	// configures the terminal interpreter
