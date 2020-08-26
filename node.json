@@ -1,0 +1,50 @@
+{
+	"category": "Command Processor", 
+	"inputs": 1, 
+	"name": "StController", 
+	"parameters": [
+		{
+			"default": "USBTX", 
+			"type": "raw", 
+			"name": "pinTX", 
+			"value": "USBTX", 
+			"options": []
+		}, 
+		{
+			"default": "USBRX", 
+			"type": "raw", 
+			"name": "pinRX", 
+			"value": "USBRX", 
+			"options": []
+		}
+	], 
+	"outputs": 8, 
+	"labels": {
+		"input": ["TX"], 
+		"output": [
+			"LEDS",
+			"IRCUT",
+			"IRLED",
+			"LENS",
+			"TEMP",
+			"METER"
+		]
+	}, 
+	"schematic_pins": {
+		"inputs": [
+			1
+		], 
+		"outputs": [
+			2, 
+			3, 
+			4, 
+			5,
+			6,
+			7,
+			8,
+			9
+		]
+	}, 
+	"repository": "https://github.com/nblocksStudioNodes/nblocks_stcontroller", 
+	"revision": ""
+}
